@@ -6,19 +6,17 @@ sudo apt update
 sudo apt install -y python3 python3-pip git
 
 # Install specific Python dependencies with apt where available
-echo "Installing Python dependencies with apt where possible..."
+echo "Installing Python dependencies"
 sudo apt install -y python3-requests
-
-# Install the rest of the Python dependencies using pip (for packages not available in apt)
-echo "Installing other Python dependencies with pip..."
-pip3 install pychromecast schedule
+sudo apt install -y python3-pychromecast
+sudo apt install -y python3-schedule
 
 # Clone your script repository from GitHub or another source
 echo "Cloning the Azan casting script..."
-git clone https://github.com/your-repo/azan-cast-script.git /opt/azan-cast-script
+git clone https://github.com/IcyonGit/AzanCastPy.git /opt/AzanCastPy
 
 # Navigate to the script directory
-cd /opt/azan-cast-script
+cd /opt/AzanCastPy
 
 # Make the script executable
 chmod +x azan_cast.py
