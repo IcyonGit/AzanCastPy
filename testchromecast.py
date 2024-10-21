@@ -1,30 +1,68 @@
 import pychromecast
+import time
 
-# Test media file (change the URL to something else if needed)
-TEST_MEDIA_URL = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-
-# Discover Google Cast devices on the network
-def get_cast_devices():
-    chromecasts, _ = pychromecast.get_chromecasts()
+# Function to discover all available Chromecast devices
+def discover_devices():
+    chromecasts, browser = pychromecast.get_chromecasts()
     return chromecasts
 
-# Play media on a selected device
-def play_test_media_on_device(cast, media_url):
-    cast.wait()  # Wait for the cast device to be ready
-    mc = cast.media_controller
-    mc.play_media(media_url, 'video/mp4')  # Change 'video/mp4' to 'audio/mp3' if testing with an audio file
-    mc.block_until_active()  # Wait until the media starts playing
-    print(f"Playing test media on {cast.device.friendly_name}")
+# Function to display the list of discovered devices
+def list_devices(chromecasts):
+    print("Available devices:")
+    for i, cast in enumerate(chromecasts):
+        print(f"{i+1}. {cast.device.friendly_name}")
+
+# Function to select a device from the list
+def select_device(chromecasts):
+    while True:
+        try:
+            choice = int(input("Select the device number to cast to: ")) - 1
+            if choice < 0 or choice >= len(chromecasts):
+                print("Invalid choice. Please try again.")
+            else:
+                return chromecasts[choice]
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+
+# Function to play media on the selected device
+def play_media_on_device(cast):
+    # Wait for the device to be ready
+    cast.wait()
+    
+    # Load media (test media URL)
+    media_url = "The Adhan - Omar Hisham Al Arabi  الأذان بصوت عمر هشام العربي  The Call to Prayer.mp3"
+    media_type = "audio/mp3"
+    print(f"Playing test media on {cast.device.friendly_name}...")
+
+    # Start media playback
+    cast.media_controller.play_media(media_url, media_type)
+    cast.media_controller.block_until_active()
+    print("Media is playing...")
+
+    # Wait for a few seconds to allow the media to play
+    time.sleep(10)
+    
+    # Stop the media
+    cast.media_controller.stop()
+    print("Media playback stopped.")
+
+# Main function
+def main():
+    print("Discovering devices...")
+    
+    # Discover devices
+    chromecasts = discover_devices()
+    
+    if not chromecasts:
+        print("No devices found.")
+        return
+    
+    # List devices and allow user to choose
+    list_devices(chromecasts)
+    selected_device = select_device(chromecasts)
+    
+    # Play media on the selected device
+    play_media_on_device(selected_device)
 
 if __name__ == "__main__":
-    print("Discovering Google Cast devices...")
-    chromecasts = get_cast_devices()
-
-    if chromecasts:
-        for cast in chromecasts:
-            print(f"Found device: {cast.device.friendly_name}")
-        # Play media on the first discovered device (you can modify this to select a specific one)
-        print(f"Playing media on {chromecasts[0].device.friendly_name}")
-        play_test_media_on_device(chromecasts[0], TEST_MEDIA_URL)
-    else:
-        print("No Google Cast devices found.")
+    main()
