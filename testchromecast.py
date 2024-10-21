@@ -30,7 +30,7 @@ def play_media_on_device(cast):
     cast.wait()
     
     # Load media (test media URL)
-    media_url = "The Adhan - Omar Hisham Al Arabi  الأذان بصوت عمر هشام العربي  The Call to Prayer.mp3"
+    media_url = "azan.mp3"
     media_type = "audio/mp3"
     print(f"Playing test media on {cast.device.friendly_name}...")
 
