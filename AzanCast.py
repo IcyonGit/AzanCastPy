@@ -4,7 +4,7 @@ import schedule
 import time
 
 # URL to the Azan MP3 (replace with local file path or accessible URL if necessary)
-AZAN_MP3_URL = "http://your-raspberry-pi.local/azan.mp3"  # Update this with the actual URL or file path
+AZAN_MP3_URL = "https://icyongit.github.io/AzanCastPy/azan.mp3"  # Update this with the actual URL or file path
 
 # Function to discover Google Cast devices
 def get_cast_devices():

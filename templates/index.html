@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/home/pi/AzanCastPy/static/style.css">
+    <title>Azan Configurator</title>
+</head>
+<body>
+    <h1>Azan Configuration</h1>
+    <form method="POST">
+        <h2>Location</h2>
+        <label for="city">City:</label>
+        <input type="text" name="city" id="city" value="{{ config.city }}" required><br>
+
+        <label for="state">State:</label>
+        <input type="text" name="state" id="state" value="{{ config.state }}" required><br>
+
+        <label for="country">Country:</label>
+        <input type="text" name="country" id="country" value="{{ config.country }}" required><br>
+
+        <h2>Azan URL</h2>
+        <label for="azan_url">Azan URL:</label>
+        <input type="url" name="azan_url" id="azan_url" value="{{ config.azan_url }}" required><br>
+
+        <h2>Prayer Times</h2>
+        {% for prayer, time in config.prayer_times.items() %}
+            <label for="{{ prayer }}">{{ prayer }}:</label>
+            <input type="time" name="{{ prayer }}" id="{{ prayer }}" value="{{ time }}" required><br>
+        {% endfor %}
+        <button type="submit">Save Changes</button>
+    </form>
+</body>
+</html>
