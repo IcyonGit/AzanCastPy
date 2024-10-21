@@ -1,5 +1,4 @@
 import pychromecast
-import time
 
 # Function to discover all available Chromecast devices
 def discover_devices():
@@ -27,24 +26,41 @@ def select_device(chromecasts):
 # Function to play media on the selected device
 def play_media_on_device(cast):
     # Wait for the device to be ready
+    print(f"Connecting to {cast.device.friendly_name}...")
     cast.wait()
-    
-    # Load media (test media URL)
-    media_url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+
+    # Load the Azan MP3 from your provided URL
+    media_url = "https://icyongit.github.io/AzanCastPy/azan.mp3"
     media_type = "audio/mp3"
-    print(f"Playing test media on {cast.device.friendly_name}...")
+    print(f"Playing Azan on {cast.device.friendly_name}...")
 
     # Start media playback
     cast.media_controller.play_media(media_url, media_type)
-    cast.media_controller.block_until_active()
-    print("Media is playing...")
-
-    # Wait for a few seconds to allow the media to play
-    time.sleep(10)
     
-    # Stop the media
-    cast.media_controller.stop()
-    print("Media playback stopped.")
+    # Wait for the media controller to become active
+    cast.media_controller.block_until_active()
+
+    # Check the status of the media controller
+    status = cast.media_controller.status
+
+    # Simplified output
+    print(f"Media Status:")
+    print(f" - Player State: {status.player_state}")
+    print(f" - Current Time: {status.current_time} seconds")
+    
+    if status.duration is not None:
+        print(f" - Duration: {status.duration} seconds")
+    else:
+        print(" - Duration: Not available")
+
+    if status.player_state == "BUFFERING":
+        print("Media is buffering...")
+    elif status.player_state == "PLAYING":
+        print("Media is playing.")
+    elif status.player_state == "IDLE":
+        print("Media failed to load or stopped unexpectedly.")
+    else:
+        print(f"Player state: {status.player_state}")
 
 # Main function
 def main():
