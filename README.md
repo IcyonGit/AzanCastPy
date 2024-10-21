@@ -10,4 +10,4 @@ Windows, however, does not have an install command. If you wish to use **Windows
 To install the script on **Linux**, use the following command:
 
 ```bash
-sudo apt install <your-package-here>
+curl -sSL https://raw.githubusercontent.com/IcyonGit/AzanCastPy/main/install.sh | bash
